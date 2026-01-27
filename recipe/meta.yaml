@@ -16,7 +16,7 @@
   "py314": "5f3cf2b574b004ea928db960bd75187c"
 } %}
 # libsvs repack info
-{% set libsvs_build_string = intel_buildnumber %}
+{% set libsvs_build_string = build_string %}
 {% set libsvs_md5 = "e9ca9ee42913071d2877aee44488a9af" %}
 # libsvs-runtime repack info
 {% set libsvs_runtime_build_string = "g613ed17" %}
@@ -25,9 +25,9 @@
 # builds off above variables
 {% set url_string =  build_string + py_tag + "_" + intel_buildnumber %}
 {% set full_build_string = url_string + "_" + cf_buildnumber %}
-{% set libsvs_url_string =  libsvs_build_string + py_tag + "_" + intel_buildnumber %}
+{% set libsvs_url_string =  libsvs_build_string + "_" + intel_buildnumber %}
 {% set libsvs_full_build_string = libsvs_url_string + "_" + cf_buildnumber %}
-{% set libsvs_runtime_url_string =  libsvs_runtime_build_string + py_tag + "_" + intel_ch %}
+{% set libsvs_runtime_url_string =  libsvs_runtime_build_string + "_" + intel_buildnumber %}
 {% set libsvs_runtime_full_build_string = libsvs_runtime_url_string + "_" + cf_buildnumber %}
 
 package:
