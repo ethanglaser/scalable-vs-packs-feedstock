@@ -25,6 +25,10 @@
 # builds off above variables
 {% set url_string =  build_string + py_tag + "_" + intel_buildnumber %}
 {% set full_build_string = url_string + "_" + cf_buildnumber %}
+{% set libsvs_url_string =  libsvs_build_string + py_tag + "_" + intel_buildnumber %}
+{% set libsvs_full_build_string = libsvs_url_string + "_" + cf_buildnumber %}
+{% set libsvs_runtime_url_string =  libsvs_runtime_build_string + py_tag + "_" + intel_ch %}
+{% set libsvs_runtime_full_build_string = libsvs_runtime_url_string + "_" + cf_buildnumber %}
 
 package:
   name: scalable-vs-packs
@@ -35,18 +39,17 @@ source:
     folder: scalable-vs
     md5: {{ md5_map[py_tag] }}
     no_hoist: true
-  - url: {{ intel_ch }}/{{ target_platform }}/libsvs-{{ version }}-{{ libsvs_build_string }}.conda
+  - url: {{ intel_ch }}/{{ target_platform }}/libsvs-{{ version }}-{{ libsvs_url_string }}.conda
     folder: libsvs
     md5: {{ libsvs_md5 }}
     no_hoist: true
-  - url: {{ intel_ch }}/{{ target_platform }}/libsvs-runtime-{{ version }}-{{ libsvs_runtime_build_string }}.conda
+  - url: {{ intel_ch }}/{{ target_platform }}/libsvs-runtime-{{ version }}-{{ libsvs_runtime_url_string }}.conda
     folder: libsvs-runtime
     md5: {{ libsvs_runtime_md5 }}
     no_hoist: true
 
 build:
   number: {{ cf_buildnumber }}
-  string: {{ full_build_string }}
   binary_relocation: false
   detect_binary_files_with_prefix: false
   skip: True  # [not (linux64) or py>313]
@@ -62,6 +65,8 @@ outputs:
     version: {{ version }}
     script: repack.sh
     number: {{ cf_buildnumber }}
+    build:
+      string: {{ full_build_string }}
     requirements:
       host:
         - python
@@ -107,6 +112,7 @@ outputs:
     script: repack_libsvs.sh
     number: {{ cf_buildnumber }}
     build:
+      string: {{ libsvs_full_build_string }}
       skip: True  # [not linux64]
     requirements:
       host:
@@ -133,6 +139,7 @@ outputs:
     script: repack_libsvs_runtime.sh
     number: {{ cf_buildnumber }}
     build:
+      string: {{ libsvs_runtime_full_build_string }}
       skip: True  # [not linux64]
     requirements:
       host:
