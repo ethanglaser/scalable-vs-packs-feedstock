@@ -8,19 +8,19 @@
 {% set intel_buildnumber = "1" %}
 {% set build_string = "g334e1ca" %}
 {% set version = "0.1.0" %}
-{% set sha256_map = {
-  "py310": "57e5b4e93485ec5c6abfa63c9b868c4ce0d0447f1eaa5111604f6160bafb479d",
-  "py311": "3945cc2f7ee857aa013fe6d1f4c034da8aee919a0f1212c62bbec46710e5b806",
-  "py312": "c7397886c3efd92d6385edde4b275ee4118dfad215f82f81353ba7929e824432",
-  "py313": "b4df256ae4af7b1d761ec9987a1ef3685f225d533630f818ae52854c39de25d3",
-  "py314": "a693fc21116d507fa625a13d391cfa7df83b1b64a931ba822f4fc8cfcdb090ac"
+{% set md5_map = {
+  "py310": "004e747d9829b6511bb8bb1185d4c4ed",
+  "py311": "43725b6b482ec9d52d0f86c9de7fd03d",
+  "py312": "fd16ad86f366750213c8c85645abbb7f",
+  "py313": "506f783578d8bcb164a2cb9edd523a47",
+  "py314": "5f3cf2b574b004ea928db960bd75187c"
 } %}
 # libsvs repack info
 {% set libsvs_build_string = build_string %}
-{% set libsvs_sha256 = "d3e11aa249a9498a3670cd86a9752172465465a6e5843c3eac3abdf43a44165e" %}
+{% set libsvs_md5 = "e9ca9ee42913071d2877aee44488a9af" %}
 # libsvs-runtime repack info
 {% set libsvs_runtime_build_string = "g613ed17" %}
-{% set libsvs_runtime_sha256 = "983da705dbb45f8f6b93ae38982f74b1654090c2e4055bca44d22c020f60c1a9" %}
+{% set libsvs_runtime_md5 = "a70b92dcc9382774e0aab407bfd2afcd" %}
 
 # builds off above variables
 {% set url_string =  build_string + py_tag + "_" + intel_buildnumber %}
@@ -37,15 +37,15 @@ package:
 source:
   - url: {{ intel_ch }}/{{ target_platform }}/scalable-vs-{{ version }}-{{ url_string }}.conda
     folder: scalable-vs
-    sha256: {{ sha256_map[py_tag] }}
+    md5: {{ md5_map[py_tag] }}
     no_hoist: true
   - url: {{ intel_ch }}/{{ target_platform }}/libsvs-{{ version }}-{{ libsvs_url_string }}.conda
     folder: libsvs
-    sha256: {{ libsvs_sha256 }}
+    md5: {{ libsvs_md5 }}
     no_hoist: true
   - url: {{ intel_ch }}/{{ target_platform }}/libsvs-runtime-{{ version }}-{{ libsvs_runtime_url_string }}.conda
     folder: libsvs-runtime
-    sha256: {{ libsvs_runtime_sha256 }}
+    md5: {{ libsvs_runtime_md5 }}
     no_hoist: true
 
 build:
