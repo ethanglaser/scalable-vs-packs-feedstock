@@ -1,23 +1,34 @@
 
-{% set cf_buildnumber = "0" %}
+{% set cf_buildnumber = "1" %}
 {% set py_tag = "py" + PY_VER|replace('.','') %}
 {% set intel_ch = "https://software.repos.intel.com/python/conda" %}
 
 # gonna have to change these every time we repack new SVS packages
+# scalable-vs repack info
 {% set intel_buildnumber = "0" %}
 {% set build_string = "g334e1ca" %}
 {% set version = "0.1.0" %}
-{% set md5_map = {
-  "py310": "004e747d9829b6511bb8bb1185d4c4ed",
-  "py311": "43725b6b482ec9d52d0f86c9de7fd03d",
-  "py312": "fd16ad86f366750213c8c85645abbb7f",
-  "py313": "506f783578d8bcb164a2cb9edd523a47",
-  "py314": "5f3cf2b574b004ea928db960bd75187c"
+{% set sha256_map = {
+  "py310": "a93f7a9ca38810fea5640006ac0f14fe8028a10abbb26e217f60f8153215a7cc",
+  "py311": "ee65ef643f3459f68f5dd7a995528c07937d330ec8634c0198326cc42fae67bd",
+  "py312": "42bb542e863c24aceff83cf41e7e84e04982099207396abfefcca3cd3473de22",
+  "py313": "70ee475773ce8470697ce76bcc9835f5cd3fcb78c14296d3d767c14dc2ca236b",
+  "py314": "9d6d2c3dffac5d83497841e137411b4df04d210a26dd1de09ed3a03ee4381ec2"
 } %}
+# libsvs repack info
+{% set libsvs_build_string = build_string %}
+{% set libsvs_sha256 = "0ca86f29346977a67bf25adeed07ea9904d511dd1fcadb51fbc5cf72fd244b57" %}
+# libsvs-runtime repack info
+{% set libsvs_runtime_build_string = "g613ed17" %}
+{% set libsvs_runtime_sha256 = "2eb4860c61215f9c6b777a9b669f811916307fa516628131a6a059d763b624d6" %}
 
 # builds off above variables
 {% set url_string =  build_string + py_tag + "_" + intel_buildnumber %}
 {% set full_build_string = url_string + "_" + cf_buildnumber %}
+{% set libsvs_url_string =  libsvs_build_string + "_" + intel_buildnumber %}
+{% set libsvs_full_build_string = libsvs_url_string + "_" + cf_buildnumber %}
+{% set libsvs_runtime_url_string =  libsvs_runtime_build_string + "_" + intel_buildnumber %}
+{% set libsvs_runtime_full_build_string = libsvs_runtime_url_string + "_" + cf_buildnumber %}
 
 package:
   name: scalable-vs-packs
@@ -26,12 +37,19 @@ package:
 source:
   - url: {{ intel_ch }}/{{ target_platform }}/scalable-vs-{{ version }}-{{ url_string }}.conda
     folder: scalable-vs
-    md5: {{ md5_map[py_tag] }}
+    sha256: {{ sha256_map[py_tag] }}
+    no_hoist: true
+  - url: {{ intel_ch }}/{{ target_platform }}/libsvs-{{ version }}-{{ libsvs_url_string }}.conda
+    folder: libsvs
+    sha256: {{ libsvs_sha256 }}
+    no_hoist: true
+  - url: {{ intel_ch }}/{{ target_platform }}/libsvs-runtime-{{ version }}-{{ libsvs_runtime_url_string }}.conda
+    folder: libsvs-runtime
+    sha256: {{ libsvs_runtime_sha256 }}
     no_hoist: true
 
 build:
   number: {{ cf_buildnumber }}
-  string: {{ full_build_string }}
   binary_relocation: false
   detect_binary_files_with_prefix: false
   skip: True  # [not (linux64) or py>313]
@@ -47,6 +65,19 @@ outputs:
     version: {{ version }}
     script: repack.sh
     number: {{ cf_buildnumber }}
+    build:
+      string: {{ full_build_string }}
+      binary_relocation: false
+      detect_binary_files_with_prefix: false
+      missing_dso_whitelist:
+        - /lib64/ld-linux-x86-64.so.2
+        - /lib64/libpthread.so.0
+        - /lib64/libm.so.6
+        - /lib64/libdl.so.2
+        - /lib64/libc.so.6
+      ignore_run_exports:
+        - python
+        - libgomp
     requirements:
       host:
         - python
@@ -86,6 +117,95 @@ outputs:
         - toml
       commands:
         - python -c "import sys,os; print('Python:',sys.version); import svs; print('svs ok', svs.library_version())"
+
+  - name: libsvs
+    version: {{ version }}
+    script: repack_libsvs.sh
+    number: {{ cf_buildnumber }}
+    build:
+      string: {{ libsvs_full_build_string }}
+      skip: True  # [not linux64]
+      binary_relocation: false
+      detect_binary_files_with_prefix: false
+      missing_dso_whitelist:
+        - /lib64/ld-linux-x86-64.so.2
+        - /lib64/libpthread.so.0
+        - /lib64/libm.so.6
+        - /lib64/libdl.so.2
+        - /lib64/libc.so.6
+        - $RPATH/libpthread.so.0
+        - $RPATH/libm.so.6
+        - $RPATH/libdl.so.2
+        - $RPATH/libc.so.6
+      ignore_run_exports:
+        - python
+    requirements:
+      host:
+        - conda-package-handling
+      run:
+        - python >=3.10
+        - libstdcxx
+        - libgcc
+    about:
+      home: https://intel.github.io/ScalableVectorSearch/index.html
+      license: Intel Simplified Software License (Version October 2022)
+      license_file:
+        - libsvs/info/licenses/distributions/LICENSE
+        - libsvs/info/licenses/ScalableVectorSearch/THIRD-PARTY-PROGRAMS
+      summary: Scalable Vector Search library
+      dev_url: https://github.com/intel/ScalableVectorSearch
+      doc_url: https://intel.github.io/ScalableVectorSearch/index.html
+    test:
+      commands:
+        - test -f $PREFIX/lib/libsvs_shared_library.so
+        - test -f $PREFIX/lib/libsvs_static_library.a
+        - test -f $PREFIX/include/svs/leanvec/leanvec.h
+
+  - name: libsvs-runtime
+    version: {{ version }}
+    script: repack_libsvs_runtime.sh
+    number: {{ cf_buildnumber }}
+    build:
+      string: {{ libsvs_runtime_full_build_string }}
+      skip: True  # [not linux64]
+      binary_relocation: false
+      detect_binary_files_with_prefix: false
+      missing_dso_whitelist:
+        - /lib64/ld-linux-x86-64.so.2
+        - /lib64/libpthread.so.0
+        - /lib64/libm.so.6
+        - /lib64/libdl.so.2
+        - /lib64/libc.so.6
+        - $RPATH/libpthread.so.0
+        - $RPATH/libm.so.6
+        - $RPATH/libdl.so.2
+        - $RPATH/libc.so.6
+      ignore_run_exports:
+        - python
+        - libgomp
+        - _openmp_mutex
+    requirements:
+      host:
+        - conda-package-handling
+      run:
+        - python >=3.10
+        - libstdcxx
+        - libgcc
+        - libgomp
+        - _openmp_mutex
+    about:
+      home: https://intel.github.io/ScalableVectorSearch/index.html
+      license: Intel Simplified Software License (Version October 2022)
+      license_file:
+        - libsvs-runtime/info/licenses/distributions/LICENSE
+        - libsvs-runtime/info/licenses/ScalableVectorSearch/THIRD-PARTY-PROGRAMS
+      summary: Scalable Vector Search runtime library
+      dev_url: https://github.com/intel/ScalableVectorSearch
+      doc_url: https://intel.github.io/ScalableVectorSearch/index.html
+    test:
+      commands:
+        - test -f $PREFIX/lib/libsvs_runtime.so
+        - test -f $PREFIX/include/svs/runtime/api_defs.h
 
 # pleases the linter
 about:

@@ -13,6 +13,32 @@ Package license: LicenseRef-IntelSimplifiedSoftwareOct2022
 
 Summary: Repackaged Intel Scalable Vector Search
 
+About libsvs
+------------
+
+Home: https://intel.github.io/ScalableVectorSearch/index.html
+
+Package license: Intel Simplified Software License (Version October 2022)
+
+Summary: Scalable Vector Search library
+
+Development: https://github.com/intel/ScalableVectorSearch
+
+Documentation: https://intel.github.io/ScalableVectorSearch/index.html
+
+About libsvs-runtime
+--------------------
+
+Home: https://intel.github.io/ScalableVectorSearch/index.html
+
+Package license: Intel Simplified Software License (Version October 2022)
+
+Summary: Scalable Vector Search runtime library
+
+Development: https://github.com/intel/ScalableVectorSearch
+
+Documentation: https://intel.github.io/ScalableVectorSearch/index.html
+
 About scalable-vs
 -----------------
 
@@ -94,6 +120,8 @@ Current release info
 
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libsvs-green.svg)](https://anaconda.org/conda-forge/libsvs) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libsvs.svg)](https://anaconda.org/conda-forge/libsvs) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libsvs.svg)](https://anaconda.org/conda-forge/libsvs) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libsvs.svg)](https://anaconda.org/conda-forge/libsvs) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libsvs--runtime-green.svg)](https://anaconda.org/conda-forge/libsvs-runtime) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libsvs-runtime.svg)](https://anaconda.org/conda-forge/libsvs-runtime) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libsvs-runtime.svg)](https://anaconda.org/conda-forge/libsvs-runtime) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libsvs-runtime.svg)](https://anaconda.org/conda-forge/libsvs-runtime) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-scalable--vs-green.svg)](https://anaconda.org/conda-forge/scalable-vs) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/scalable-vs.svg)](https://anaconda.org/conda-forge/scalable-vs) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/scalable-vs.svg)](https://anaconda.org/conda-forge/scalable-vs) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/scalable-vs.svg)](https://anaconda.org/conda-forge/scalable-vs) |
 
 Installing scalable-vs-packs
@@ -106,41 +134,41 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `scalable-vs` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `libsvs, libsvs-runtime, scalable-vs` can be installed with `conda`:
 
 ```
-conda install scalable-vs
-```
-
-or with `mamba`:
-
-```
-mamba install scalable-vs
-```
-
-It is possible to list all of the versions of `scalable-vs` available on your platform with `conda`:
-
-```
-conda search scalable-vs --channel conda-forge
+conda install libsvs libsvs-runtime scalable-vs
 ```
 
 or with `mamba`:
 
 ```
-mamba search scalable-vs --channel conda-forge
+mamba install libsvs libsvs-runtime scalable-vs
+```
+
+It is possible to list all of the versions of `libsvs` available on your platform with `conda`:
+
+```
+conda search libsvs --channel conda-forge
+```
+
+or with `mamba`:
+
+```
+mamba search libsvs --channel conda-forge
 ```
 
 Alternatively, `mamba repoquery` may provide more information:
 
 ```
 # Search all versions available on your platform:
-mamba repoquery search scalable-vs --channel conda-forge
+mamba repoquery search libsvs --channel conda-forge
 
-# List packages depending on `scalable-vs`:
-mamba repoquery whoneeds scalable-vs --channel conda-forge
+# List packages depending on `libsvs`:
+mamba repoquery whoneeds libsvs --channel conda-forge
 
-# List dependencies of `scalable-vs`:
-mamba repoquery depends scalable-vs --channel conda-forge
+# List dependencies of `libsvs`:
+mamba repoquery depends libsvs --channel conda-forge
 ```
 
 
