@@ -1,26 +1,25 @@
 
-{% set cf_buildnumber = "1" %}
+{% set cf_buildnumber = "0" %}
 {% set py_tag = "py" + PY_VER|replace('.','') %}
 {% set intel_ch = "https://software.repos.intel.com/python/conda" %}
 
 # gonna have to change these every time we repack new SVS packages
 # scalable-vs repack info
 {% set intel_buildnumber = "0" %}
-{% set build_string = "g334e1ca" %}
-{% set version = "0.1.0" %}
+{% set build_string = "g62f5782" %}
+{% set version = "0.2.0" %}
 {% set sha256_map = {
-  "py310": "a93f7a9ca38810fea5640006ac0f14fe8028a10abbb26e217f60f8153215a7cc",
-  "py311": "ee65ef643f3459f68f5dd7a995528c07937d330ec8634c0198326cc42fae67bd",
-  "py312": "42bb542e863c24aceff83cf41e7e84e04982099207396abfefcca3cd3473de22",
-  "py313": "70ee475773ce8470697ce76bcc9835f5cd3fcb78c14296d3d767c14dc2ca236b",
-  "py314": "9d6d2c3dffac5d83497841e137411b4df04d210a26dd1de09ed3a03ee4381ec2"
+  "py310": "1f7f0c71e6cfc755688a8990ec48ed82504b2a3e6a4f0a946d285438a19d0be2",
+  "py311": "acf036277bd8830e288aa892eae433318c3b65d3dab5a08798d5b6dfa2363509",
+  "py312": "15e0b407e54a26147ca072e52f6369d09e8c312ae01c5daa4dae7ae44874e53b",
+  "py313": "e8944825469ef6de24dce58f600b96cdb9ef7ea49da91030cfbf4529afd51348"
 } %}
 # libsvs repack info
-{% set libsvs_build_string = build_string %}
-{% set libsvs_sha256 = "0ca86f29346977a67bf25adeed07ea9904d511dd1fcadb51fbc5cf72fd244b57" %}
+{% set libsvs_build_string = "gd549b83" %}
+{% set libsvs_sha256 = "8ec83ca9e311ad642b2fd6fe20fb27c0021fb679d508bc5f7b3a1a55c4cb8581" %}
 # libsvs-runtime repack info
-{% set libsvs_runtime_build_string = "g613ed17" %}
-{% set libsvs_runtime_sha256 = "2eb4860c61215f9c6b777a9b669f811916307fa516628131a6a059d763b624d6" %}
+{% set libsvs_runtime_build_string = "gd549b83" %}
+{% set libsvs_runtime_sha256 = "4e11657eff0ec055ee12845026a61313ad919ff1181514ef2f44453e87658e86" %}
 
 # builds off above variables
 {% set url_string =  build_string + py_tag + "_" + intel_buildnumber %}
@@ -37,7 +36,7 @@ package:
 source:
   - url: {{ intel_ch }}/{{ target_platform }}/scalable-vs-{{ version }}-{{ url_string }}.conda
     folder: scalable-vs
-    sha256: {{ sha256_map[py_tag] }}
+    sha256: {{ sha256_map.get(py_tag, "") }}
     no_hoist: true
   - url: {{ intel_ch }}/{{ target_platform }}/libsvs-{{ version }}-{{ libsvs_url_string }}.conda
     folder: libsvs
