@@ -1,5 +1,5 @@
 
-{% set cf_buildnumber = "0" %}
+{% set cf_buildnumber = "1" %}
 {% set py_tag = "py" + PY_VER|replace('.','') %}
 {% set intel_ch = "https://software.repos.intel.com/python/conda" %}
 
@@ -136,13 +136,10 @@ outputs:
         - $RPATH/libm.so.6
         - $RPATH/libdl.so.2
         - $RPATH/libc.so.6
-      ignore_run_exports:
-        - python
     requirements:
       host:
         - conda-package-handling
       run:
-        - python >=3.10
         - libstdcxx
         - libgcc
     about:
@@ -180,14 +177,12 @@ outputs:
         - $RPATH/libdl.so.2
         - $RPATH/libc.so.6
       ignore_run_exports:
-        - python
         - libgomp
         - _openmp_mutex
     requirements:
       host:
         - conda-package-handling
       run:
-        - python >=3.10
         - libstdcxx
         - libgcc
         - libgomp
