@@ -20,6 +20,12 @@ if [ -d "$root/lib" ]; then
   cp -a "$root/lib"/*.a "$PREFIX/lib/" 2>/dev/null || true
 fi
 
+# Copy CMake config files if they exist
+if [ -d "$root/lib/cmake" ]; then
+  mkdir -p "$PREFIX/lib/cmake"
+  cp -a "$root/lib/cmake"/* "$PREFIX/lib/cmake/"
+fi
+
 # Copy headers if they exist
 if [ -d "$root/include" ]; then
   mkdir -p "$PREFIX/include"
