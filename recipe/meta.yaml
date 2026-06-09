@@ -6,21 +6,21 @@
 # gonna have to change these every time we repack new SVS packages
 # scalable-vs repack info
 {% set intel_buildnumber = "0" %}
-{% set build_string = "gc187b54" %}
-{% set version = "0.3.0" %}
+{% set build_string = "g7f7c639" %}
+{% set version = "0.4.0" %}
 {% set sha256_map = {
-  "py310": "181c3e0419d1cd72fa19a6b95e998b7e3432de1a342d8b5dfa86558b44a28c4f",
-  "py311": "f917fc62379487619de8efa59bf54e8329a83c6ed0d4430e962c910b19368b3f",
-  "py312": "c1b3bb283a37d68db731fa739596dc093b697a91dbec7a7a9a13a1bb2147b11d",
-  "py313": "c903763974fc2d56179cf49dae87513bc0577703c69dcdc333f5b4c36b9788c7",
-  "py314": "e43280d0971ea40a2a77d605addc8e5d1380636969850e67f915fc69275be509"
+  "py310": "e11f6056355524e011d3b5bf7ede28b09a7687cfb984709efe439d1d40e8089a",
+  "py311": "81f47af5be521f38cff2cf2d708135edaa1fd0cd941dee2f24426b0e704a8c60",
+  "py312": "f655ea8ba5703584733334e898593dcbc75f0a4b788be4737620195eebc91abc",
+  "py313": "bf86dd6a3a1d92927d7ffe421fd20211971aa7d9a63716c6eb762deac1ba355c",
+  "py314": "4125390de2c91052e01a146ba86de8bd11141e5ce8460246b96a35b778205069"
 } %}
 # libsvs repack info
-{% set libsvs_build_string = "gc187b54" %}
-{% set libsvs_sha256 = "25e910ae66be3b11eb31291642a1ded22ad9d67072039fd671da2432af0e7e41" %}
+{% set libsvs_build_string = "g7f7c639" %}
+{% set libsvs_sha256 = "4211f85103be8891b942b965f46167ca19b479fc6931df1ce435c1d51339f286" %}
 # libsvs-runtime repack info
-{% set libsvs_runtime_build_string = "gc187b54" %}
-{% set libsvs_runtime_sha256 = "b4f9b6b6c3cfcd12f326b473048f85d5211f7fa54942474aeae66839f500ecdb" %}
+{% set libsvs_runtime_build_string = "g7f7c639" %}
+{% set libsvs_runtime_sha256 = "bb8c07c560b27e6b5ff361ba1b110062bf3ee0febc35351db39b50aa5ec81803" %}
 
 # builds off above variables
 {% set url_string =  build_string + py_tag + "_" + intel_buildnumber %}
